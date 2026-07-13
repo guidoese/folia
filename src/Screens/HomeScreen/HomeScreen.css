@@ -54,6 +54,34 @@
   color: var(--color-accent);
 }
 
+/* --- Botón eliminar cuenta --- */
+.notes-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.notes-delete-account {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-error);
+  background: transparent;
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  min-height: 32px;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.notes-delete-account:hover {
+  background-color: var(--color-error-bg);
+}
+
 /* --- Formulario --- */
 
 .note-form {
@@ -278,9 +306,106 @@
   margin-bottom: 1.5rem;
 }
 
+/* --- Modal --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(43, 41, 38, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card-hover);
+  padding: 2rem 1.75rem;
+  transition: var(--transition-theme);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: var(--color-ink);
+}
+
+.modal-description {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0 0 1.25rem;
+}
+
+.modal-error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: 0.85rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.modal-cancel {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  background: transparent;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.modal-cancel:hover {
+  border-color: var(--color-ink-soft);
+}
+
+.modal-confirm-delete {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--color-error);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 44px;
+  transition: filter 0.15s ease;
+}
+
+.modal-confirm-delete:hover {
+  filter: brightness(1.08);
+}
+
+.modal-confirm-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* --- Responsivo --- */
 
-/* Móvil (320px - 600px): una sola columna, menos padding */
 @media (max-width: 600px) {
   .notes-screen {
     padding: 1.5rem 1rem 3rem;
@@ -292,7 +417,6 @@
 
   .notes-header {
     margin-bottom: 1.5rem;
-    /* El título y el botón se apilan verticalmente */
     align-items: flex-start;
   }
 
@@ -301,13 +425,11 @@
     margin-bottom: 1.75rem;
   }
 
-  /* Una sola columna en móvil */
   .notes-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  /* Sin giro en móvil — se ve raro en una sola columna y puede cortar contenido */
   .note-card:nth-child(3n),
   .note-card:nth-child(3n + 1),
   .note-card:nth-child(3n + 2) {
@@ -318,7 +440,6 @@
     transform: translateY(-2px);
   }
 
-  /* Botones de acción más grandes para touch */
   .note-form-actions {
     flex-direction: column;
   }
@@ -328,9 +449,16 @@
     width: 100%;
     text-align: center;
   }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .notes-header-actions {
+    align-items: flex-end;
+  }
 }
 
-/* Tablet (601px - 900px): dos columnas */
 @media (min-width: 601px) and (max-width: 900px) {
   .notes-screen {
     padding: 2rem 1.5rem 3rem;
@@ -341,7 +469,6 @@
   }
 }
 
-/* Pantallas grandes (1200px+): más padding lateral */
 @media (min-width: 1200px) {
   .notes-screen {
     max-width: 1100px;
@@ -349,7 +476,6 @@
   }
 }
 
-/* Pantallas muy anchas (1800px+) */
 @media (min-width: 1800px) {
   .notes-screen {
     max-width: 1300px;
@@ -370,14 +496,8 @@
   }
 }
 
-.notes-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-/* En móvil: ocultamos el flotante, mostramos el del header */
-@media (max-width: 1020px) {
+/* En móvil ocultamos el toggle flotante y lo mostramos en el header */
+@media (max-width: 600px) {
   .theme-toggle--floating {
     display: none;
   }
@@ -388,8 +508,8 @@
   }
 }
 
-/* En desktop: ocultamos el del header, mostramos el flotante */
-@media (min-width: 1021px) {
+/* En desktop el toggle sigue flotando, lo ocultamos del header */
+@media (min-width: 601px) {
   .theme-toggle--header {
     display: none;
   }
