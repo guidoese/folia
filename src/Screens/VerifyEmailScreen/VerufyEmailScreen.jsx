@@ -49,7 +49,7 @@ export const VerifyEmailScreen = () => {
   return (
     <div className="auth-screen">
       <div className="auth-card">
-        <p className="auth-eyebrow">Notas personales</p>
+        <p className="auth-eyebrow">Folia</p>
         <h1 className="auth-title">Verificación de cuenta</h1>
 
         {status === "loading" && <p>Verificando tu cuenta...</p>}
