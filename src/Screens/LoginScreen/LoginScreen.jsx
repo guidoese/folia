@@ -44,7 +44,7 @@ export const LoginScreen = () => {
       <ThemeToggle className="theme-toggle--floating" />
 
       <div className="auth-card">
-        <p className="auth-eyebrow">Notas personales</p>
+        <p className="auth-eyebrow">Folia</p>
         <h1 className="auth-title">Iniciar sesión</h1>
 
         {error_message && <p className="auth-error">{error_message}</p>}
